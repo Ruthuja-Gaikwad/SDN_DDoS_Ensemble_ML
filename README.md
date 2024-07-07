@@ -1,10 +1,6 @@
 # SDN_DDoS_Ensemble_ML
 Welcome to SDN_DDoS_Ensemble_ML, an advanced project enhancing DDoS attack detection and mitigation in Software Defined Networks (SDN). Using an ensemble online machine learning model, our approach effectively counters various DDoS threats, including low-rate and zero-day attacks, ensuring robust network security and performance.
 
-Enhancing DDoS Attack Detection and Mitigation in SDN Using an Ensemble Online Machine Learning Model
-This repository contains the implementation of the research work aimed at enhancing the detection and mitigation of Distributed Denial of Service (DDoS) attacks in Software Defined Networks (SDN) through an ensemble online machine learning model.
-
-
 # Features
 Ensemble Online Machine Learning Model: Adapts dynamically to new DDoS attack patterns.
 High Detection Accuracy: Achieves a 99.2% detection rate, outperforming existing models on multiple benchmark datasets.

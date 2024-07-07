@@ -1,0 +1,101 @@
+for train_index, test_index in skf.split(X, y):
+    X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+    y_train, y_test = y.iloc[train_index], y.iloc[test_index]
+
+    reshaped_y_train = np.asarray(y_train).reshape(-1, 1)
+    reshaped_y_test = np.asarray(y_test).reshape(-1, 1)
+
+print( 'X_train length: ', len(X_train) ) # To check if splits worked
+print( 'y_train length: ', len(y_train) )
+print( 'X_test length: ', len(X_test) )
+print( 'y_test length: ', len(y_test) )
+
+
+from sklearn.neural_network import MLPClassifier
+from sklearn.naive_bayes import BernoulliNB
+from sklearn.linear_model import PassiveAggressiveClassifier, SGDClassifier
+from sklearn.ensemble import VotingClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
+
+# Create classifiers
+mlp_classifier = MLPClassifier(random_state=42)
+nb_classifier = BernoulliNB()
+pa_classifier = PassiveAggressiveClassifier(random_state=42)
+sgd_classifier = SGDClassifier(random_state=42)
+
+# Create a Voting Classifier with the above classifiers
+voting_classifier = VotingClassifier(
+    estimators=[
+        ('mlp', mlp_classifier),
+        ('nb', nb_classifier),
+        ('pa', pa_classifier),
+        ('sgd', sgd_classifier)
+    ],
+    voting='hard'  # 'hard' for majority voting, 'soft' for weighted voting based on probabilities
+)
+
+# Train all classifiers
+mlp_classifier.fit(X_train, y_train)
+nb_classifier.fit(X_train, y_train)
+pa_classifier.fit(X_train, y_train)
+sgd_classifier.fit(X_train, y_train)
+voting_classifier.fit(X_train, y_train)
+
+# Make predictions on the test data
+y_pred_mlp = mlp_classifier.predict(X_test)
+y_pred_nb = nb_classifier.predict(X_test)
+y_pred_pa = pa_classifier.predict(X_test)
+y_pred_sgd = sgd_classifier.predict(X_test)
+y_pred_voting = voting_classifier.predict(X_test)
+
+# Calculate metrics for each classifier
+metrics_mlp = {
+    'accuracy': accuracy_score(y_test, y_pred_mlp),
+    'precision': precision_score(y_test, y_pred_mlp, average='weighted'),
+    'recall': recall_score(y_test, y_pred_mlp, average='weighted'),
+    'confusion_matrix': confusion_matrix(y_test, y_pred_mlp)
+}
+
+metrics_nb = {
+    'accuracy': accuracy_score(y_test, y_pred_nb),
+    'precision': precision_score(y_test, y_pred_nb, average='weighted'),
+    'recall': recall_score(y_test, y_pred_nb, average='weighted'),
+    'confusion_matrix': confusion_matrix(y_test, y_pred_nb)
+}
+
+metrics_pa = {
+    'accuracy': accuracy_score(y_test, y_pred_pa),
+    'precision': precision_score(y_test, y_pred_pa, average='weighted'),
+    'recall': recall_score(y_test, y_pred_pa, average='weighted'),
+    'confusion_matrix': confusion_matrix(y_test, y_pred_pa)
+}
+
+metrics_sgd = {
+    'accuracy': accuracy_score(y_test, y_pred_sgd),
+    'precision': precision_score(y_test, y_pred_sgd, average='weighted'),
+    'recall': recall_score(y_test, y_pred_sgd, average='weighted'),
+    'confusion_matrix': confusion_matrix(y_test, y_pred_sgd)
+}
+
+metrics_voting = {
+    'accuracy': accuracy_score(y_test, y_pred_voting),
+    'precision': precision_score(y_test, y_pred_voting, average='weighted'),
+    'recall': recall_score(y_test, y_pred_voting, average='weighted'),
+    'confusion_matrix': confusion_matrix(y_test, y_pred_voting)
+}
+
+# Print metrics for each classifier
+print("MLP Classifier Metrics:")
+print(metrics_mlp)
+
+print("\nBernoulli Naive Bayes Metrics:")
+print(metrics_nb)
+
+print("\nPassive Aggressive Classifier Metrics:")
+print(metrics_pa)
+
+print("\nStochastic Gradient Descent (SGD) Classifier Metrics:")
+print(metrics_sgd)
+
+print("\nEnsemble Model (Voting Classifier) Metrics:")
+print(metrics_voting)

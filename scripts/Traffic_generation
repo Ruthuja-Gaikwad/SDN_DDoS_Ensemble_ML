@@ -1,0 +1,82 @@
+1 Introduction
+This documentation provides a comprehensive guide to generating and capturing network
+traffic in a Software-Defined Networking (SDN) environment using Mininet and the Ryu
+controller. Mininet is a network emulator that creates a realistic virtual network, running
+real kernel, switch, and application code, on a single machine. Ryu is a component-based
+software-defined networking framework that provides software components used to build
+a flexible and dynamic network control plane.
+
+2 Requirements
+Before starting, ensure you have the following components installed and configured:
+• Operating System: A Unix-based system (e.g., Ubuntu 20.04 or later) is recommended for compatibility with Mininet and Ryu.
+• Python: Python 3.x installed. You can verify this by running:
+$python3 -- version
+• Mininet: Install Mininet by running the following commands:
+$sudo apt - get update && upgrade
+$sudo apt install git ( If the git is not available )
+$git clone https :// github . com / mininet / mininet
+$cd mininet
+$mininet / util / install . sh -a
+$sudo python3 / PATH / mininet / examples / miniedit . py
+• Ryu Controller: For Ryu-Controller You need Python3.8 Version.
+Create a Python 3.8 version on your system and create the virtual environment
+using Python 3.8 so that it creates a venv using version 3.8 only. Then you can
+install the Ryu controller in the venv by activating it.
+$python3 .8 -m venv [ ryu_env_name ]
+$source [ ryu_env_name ]/ bin / activate
+$pip install ryu eventlet ==0.30.2
+You can check and run ryu-controller:
+$ryu - manager -- version
+$ryu - manager ryu . app . simple_switch_13
+• iperf: Install iperf for traffic generation:
+$sudo apt - get install iperf
+• tcpdump: Install tcpdump for capturing network traffic:
+$sudo apt - get install tcpdump
+• Wireshark (Optional): Install Wireshark for analyzing PCAP files:
+$sudo apt - get install wireshark
+
+3 Running a mininet file using ryu controller
+• Create a topology using mininet GUI and save the file in examples folder of mininet
+and export to py file so that a new topology python script it generated.
+• Add the below line at the end of the topology_name.py file.
+topos={’mytopo’:(lambda:myNetwork())}
+To run the topology_name.py open two terminals.
+In terminal 1:
+$ryu - manager ryu . app . simple_switch_13
+In terminal 2:
+$sudo mn -- custom Abilene . py -- topo = mytopo -- controller = remote , ip
+=127.0.0.1 , port =6633 -- switch = ovsk , protocols = OpenFlow13
+
+4 Generating traffic
+• Run the Ryu-controller.
+• Run the mininet Topology.
+• In the Mininet prompt mininet> open xterm terminals for required hosts.
+• replace host names as per the mininet topology file.
+$mininet > xterm h1 h2 Attacker VictimHost
+It will open 4 xterms for the h1, h2, Attacker, VictimHost in this case.
+• In VictimHost run the following command to listen the traffic. It listens the traffic
+in the background in all types of interfaces if there is any restriction to listen only
+one interface replace the "any" with the respective interface name.Ex: eth0, eth1
+$tcpdump -i any -w traffic . pcap &
+• In the Host xterms use the below commands to generate the TCP and UDP to the
+VictimHost. Replace Given IP with the VictimHost IP
+$iperf -c 10.0.0.1 -t 30 -i 1 &
+This command opens an xterm window for host h2 and starts iperf in client mode
+(-c) to connect to 10.0.0.1 (assuming h1’s IP address) for 30 seconds (-t 30) with a
+reporting interval of 1 second (-i 1).
+$iperf -c 10.0.0.1 -u -b 10 M -t 30 -i 1 &
+3
+This command opens an xterm window for host h2 and starts iperf in UDP client
+mode (-c) to connect to 10.0.0.1 (assuming h1’s IP address) for 30 seconds (-t 30)
+with a reporting interval of 1 second (-i 1). -u specifies UDP mode, and -b 10M
+sets the bandwidth to 10 Mbps (adjust as needed).
+• In the Attacker xterm run the attack_script.py file like below:
+$sudo python3 attack_script . py
+
+5 Conclusion
+After completion of All the traffic in hosts and attacker to the VictimHost. The New traffic.pcap file is generated.
+
+6 References
+The GML files for topologies: https://github.com/yyd19981117/Graphml-To-Mininet/
+tree/main
+traffic.pcap file is generated.

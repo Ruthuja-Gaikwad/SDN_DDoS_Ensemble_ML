@@ -1,0 +1,18 @@
+1 # Setup
+• Python: 3.8.10
+• Mininet (v2.3.14b): network topology (using miniedit.py) mininet (use
+github)
+• RYU SDN controller(v4.3.4): use virtual env for this;
+Code:
+1. Create a virtual environment: python3 -m venv my ryu env
+2. Activate the virtual environment: source my ryu env/bin/activate
+3. Install Ryu and eventlet: pip install ryu eventlet==0.30.2
+4. Attempt to run ryu-manager –version: “‘bash
+ryu-manager –version
+5. Make simple switch 13 as a L4 switch.
+• Install wireshark
+• Install Scapy or equivalent for crafting attack packets or to customise
+attack packets.
+• Install tcpreplay
+
+

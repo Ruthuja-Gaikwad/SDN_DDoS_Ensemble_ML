@@ -14,6 +14,9 @@ Welcome to SDN_DDoS_Ensemble_ML, an advanced project enhancing DDoS attack detec
 3. notebooks/: colab notebooks for data preprocessing, model training, and evaluation.
 4. scripts/: Utility scripts for running simulations and experiments in SDN environments.
 
+# Screenshots  
+![WhatsApp Image 2024-07-06 at 10 46 54_95758f20](https://github.com/Ruthuja-Gaikwad/SDN_DDoS_Ensemble_ML/assets/139485296/88f1c80f-7641-4c26-b332-2eccd3b9413c)
+
 
 # Usage
 1. Prepare the datasets by running the preprocessing scripts in the scripts directory.
